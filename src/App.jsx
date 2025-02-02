@@ -40,7 +40,7 @@ const formatPosition = (e) => {
 
 const InfoToast = ({ showToast, setShowToast }) => (
   <ToastContainer position="middle-center" className="p-3">
-    <Toast show={showToast!=""} onClose={() => setShowToast("")} autohide>
+    <Toast show={showToast != ""} onClose={() => setShowToast("")} autohide>
       <Toast.Header>
         <strong className="me-auto">Error</strong>
       </Toast.Header>

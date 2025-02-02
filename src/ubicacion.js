@@ -52,34 +52,31 @@ export const usarGPS = (actualizarUbicacion, setShowToast) => {
 };
 
 export const usarIP = (actualizarUbicacion, setShowToast) => {
-  try {
-    const fetchIpInfo = async () => {
-      try {
-        const url = "https://ipapi.co/json";
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const ipInfo = await response.json();
-        if (ipInfo &&
-          typeof ipInfo.latitude === "number" &&
-          typeof ipInfo.longitude === "number") {
-          actualizarUbicacion(
-            ipInfo.latitude,
-            ipInfo.longitude,
-            origenUbicacion.origenIP
-          );
-        } else {
-          throw new Error("No se encontraron las coordenadas en la respuesta");
-        }
-      } catch (error) {
-        console.error("Error recuperando información de la IP:", error);
-        setShowToast(error.message);
+  const fetchIpInfo = async () => {
+    try {
+      const url = "https://ipapi.co/json";
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Error recuperando información de la IP, status: ${response.status}`);
       }
-    };
-    fetchIpInfo();
-  } catch (error) {
-    console.error(error);
-    setShowToast(error.message);
-  }
+      const ipInfo = await response.json();
+      if (
+        ipInfo &&
+        typeof ipInfo.latitude === "number" &&
+        typeof ipInfo.longitude === "number"
+      ) {
+        actualizarUbicacion(
+          ipInfo.latitude,
+          ipInfo.longitude,
+          origenUbicacion.origenIP
+        );
+      } else {
+        throw new Error("No se encontraron las coordenadas en la respuesta");
+      }
+    } catch (error) {
+      console.error(error);
+      setShowToast(error.message);
+    }
+  };
+  fetchIpInfo();
 };
